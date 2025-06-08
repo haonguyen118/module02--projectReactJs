@@ -3,21 +3,46 @@ import ListUsers from "../../layout/ListUsers";
 import AddUserModal from "../../layout/AddUserModal";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Item from "antd/es/list/Item";
+
 import { userFindAll } from "../../redux/api/service/userService";
 
 export default function UserDashboards() {
   const { users } = useSelector((state) => state.users);
-  const [tabActive, setTabActive] = useState(null);
-  // const [inputSearch, setInputSearch] = useState(""); // State quản lý giá trị input tìm kiếm
+
+  const [inputSearch, setInputSearch] = useState(""); // State quản lý giá trị input tìm kiếm
+  const [searchData, setSearchData] = useState([...users]);
+  const [status, setStatus] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(userFindAll);
+  }, [dispatch]);
 
   // ham search theo ten
-  //   const handleInputSearch = (event) = {
-  //     setInputSearch(event.target.value);
+  const handleInputSearch = (e) => {
+    setInputSearch(e.target.value);
+  };
 
-  // }
-  const dispatch = useDispatch();
-  const [filterUser, setFilterUser] = useState([]);
+  useEffect(() => {
+    let filteredData = [...users]; // Khởi tạo filteredData từ users
+
+    if (inputSearch !== "" && status !== null) {
+      filteredData = filteredData
+        .filter((e) => e.name.toLowerCase().includes(inputSearch.toLowerCase()))
+        .filter((e) => e.status == status);
+    } else if (inputSearch !== "" && status === null) {
+      filteredData = filteredData.filter((e) =>
+        e.name.toLowerCase().includes(inputSearch.toLowerCase())
+      );
+    } else if (inputSearch === "" && status !== null) {
+      filteredData = filteredData.filter((e) => e.status == status);
+    }
+
+    setSearchData(filteredData); // Cập nhật searchData với kết quả đã lọc
+  }, [inputSearch, status, users]); // Thêm users vào dependency array
+
+  const handleFilterStatus = (status) => {
+    setStatus(status);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -30,18 +55,6 @@ export default function UserDashboards() {
     setIsModalOpen(false);
   };
 
-  const handleChangeActive = () => {
-    if (tabActive === null) {
-      setFilterUser(users);
-    } else if (tabActive === 1) {
-      setFilterUser(users.filter((item) => item.status));
-    } else {
-      setFilterUser(users.filter((item) => item.status));
-    }
-  };
-  useEffect(() => {
-    dispatch(userFindAll);
-  });
   return (
     <>
       <div
@@ -60,23 +73,24 @@ export default function UserDashboards() {
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 5 }}>
         <Select
+          defaultValue={null}
           style={{ width: 200 }}
-          onChange={handleChangeActive}
+          onChange={handleFilterStatus}
           options={[
-            { value: 1, label: "Đang hoạt động" },
-            { value: 0, label: "Ngừng hoạt động" },
+            { value: true, label: "Đang hoạt động" },
+            { value: false, label: "Ngừng hoạt động" },
             { value: null, label: "Tất cả" },
           ]}
         ></Select>
         <Input
-          // onChange={handleInputSearch}
+          onChange={handleInputSearch}
           style={{ width: 200 }}
           type="search"
           name="search"
           placeholder="Tìm kiếm theo tên"
         ></Input>
       </div>
-      <ListUsers />
+      <ListUsers searchData={searchData} />
       <AddUserModal
         handleCancel={handleCancel}
         handleChange={handleOk}

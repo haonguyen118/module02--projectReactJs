@@ -1,6 +1,14 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function SizeBar() {
+  const navigate = useNavigate();
+  const logout = () => {
+    const confirm_logout = confirm("Bạn có chắc chắn muốn thoát không?");
+    if (confirm_logout) {
+      localStorage.removeItem("isLogin");
+      navigate("/login");
+    }
+  };
   return (
     <div
       style={{
@@ -42,7 +50,7 @@ export default function SizeBar() {
       <div>
         {" "}
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <Link to={"/login"}> Đăng xuất</Link>
+        <p onClick={logout}> Đăng xuất</p>
       </div>
     </div>
   );

@@ -7,9 +7,9 @@ import ProductManager from "../page/manager_products/ProductManager";
 export const adminRoutes = {
   path: "admin",
   element: (
-    // <PrivateRoute>
-    <AdminLayout />
-    // </PrivateRoute>
+    <PrivateRoute>
+      <AdminLayout />
+    </PrivateRoute>
   ),
   children: [
     { index: 1, element: <UserDashboards /> },

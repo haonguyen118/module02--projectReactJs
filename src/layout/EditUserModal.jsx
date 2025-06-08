@@ -54,24 +54,24 @@ export default function EditUserModal({
   };
   const onFinish = async (values) => {
     console.log("Success:", values);
-    const emailExists = users.some((user) => user.email === values.email);
-    if (emailExists) {
-      notification.error({ message: "Email đã tồn tại", duration: 2 });
-    } else {
-      const updateUser = {
-        email: values.email,
-        name: values.username,
-        password: values.password,
-        dateOfBirth: values.dateOfBirth,
-        created_at: new Date(),
-        role: values.role,
-        status: values.status,
-      };
-      await userUpdate(updateUser, dataEdit.id).then(() =>
-        dispatch(userFindAll())
-      );
-      notification.success({ message: "Cập nhật thành công", duration: 2 });
-    }
+    // const emailExists = users.some((user) => user.email === values.email);
+    // if (emailExists) {
+    //   notification.error({ message: "Email đã tồn tại", duration: 2 });
+    // } else {
+    const updateUser = {
+      email: values.email,
+      name: values.username,
+      password: values.password,
+      dateOfBirth: values.dateOfBirth,
+      created_at: new Date(),
+      role: values.role,
+      status: values.status,
+    };
+    await userUpdate(updateUser, dataEdit.id).then(() =>
+      dispatch(userFindAll())
+    );
+    notification.success({ message: "Cập nhật thành công", duration: 2 });
+    // }
     setIsModalEditOpen(false);
     form.resetFields();
   };
@@ -137,6 +137,7 @@ export default function EditUserModal({
             <Input style={{ width: 480 }} />
           </Form.Item>
           <Form.Item
+            // disabled
             label="Email"
             name="email"
             rules={[
@@ -152,6 +153,7 @@ export default function EditUserModal({
             ]}
           >
             <Input
+              readOnly
               placeholder="you@gmail.com"
               style={{ width: 480 }}
               onChange={handleEmailChange}
@@ -211,12 +213,12 @@ export default function EditUserModal({
             </Form.Item>
             <Form.Item label={null}>
               <Button
-                style={{ width: 50 }}
+                style={{ width: 70 }}
                 type="primary"
                 htmlType="submit"
                 onClick={handleEditOk}
               >
-                Sua
+                Cập nhật
               </Button>
             </Form.Item>
           </div>

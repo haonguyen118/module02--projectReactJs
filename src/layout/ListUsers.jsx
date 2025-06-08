@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, userFindAll } from "../redux/api/service/userService";
 import DeleteCofirmModal from "./DeleteCofirmModal";
 import EditUserModal from "./EditUserModal";
-import AddUserModal from "./AddUserModal";
 
-export default function ListUsers() {
+export default function ListUsers({ searchData }) {
   const { users } = useSelector((state) => state.users);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
@@ -15,7 +14,6 @@ export default function ListUsers() {
   const [dataEdit, setDataEdit] = useState(null);
   const showModalEdit = (id) => {
     setDataEdit(users.find((e) => e.id === id));
-    console.log(id);
 
     setId(id);
     setIsModalEditOpen(true);
@@ -38,10 +36,6 @@ export default function ListUsers() {
   const dispatch = useDispatch();
 
   const handleDelete = async () => {
-    console.log("Đã vào đây");
-    console.log("id = ", id);
-    console.log("oldStatus = ", oldStatus);
-
     if (oldStatus == 1) {
       await deleteUser(0, id).then(() => dispatch(userFindAll()));
     } else {
@@ -52,7 +46,6 @@ export default function ListUsers() {
   useEffect(() => {
     dispatch(userFindAll());
   }, [dispatch]);
-  console.log("users1", users);
 
   const columns = [
     {
@@ -119,7 +112,7 @@ export default function ListUsers() {
             top: 194.5,
             left: 264,
           }}
-          dataSource={users}
+          dataSource={searchData}
           columns={columns}
         />
       </div>

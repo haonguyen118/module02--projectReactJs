@@ -1,5 +1,5 @@
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-
+import bcrypt from "bcryptjs";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,20 +15,33 @@ export default function Login() {
   useEffect(() => {
     dispatch(userFindAll());
   }, []);
+// 
+
+  };
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    const emailExists = users.some(
+    const emailExists = users.find(
       (user) => user.email === values.email && user.password === values.password
     );
-    if (emailExists) {
-      notification.success({ message: "Dang nhap thanh cong", duration: 3 });
+    console.log("emailExisted", emailExists);
+
+    if (emailExists && emailExists.status) {
+      notification.success({ message: "Đăng nhập thành công☺️", duration: 3 });
+      localStorage.setItem("isLogin", true);
       navigate("/admin");
     } else {
-      notification.error({
-        message: "Email hoac mat khau khong trung khop",
-        duration: 3,
-      });
+      if (!emailExists) {
+        notification.error({
+          message: "Email hoặc mật khẩu không trùng khớp!!!",
+          duration: 3,
+        });
+      } else {
+        notification.error({
+          message: "Tài khoản của bạn đã bị khoá!!!!",
+          duration: 3,
+        });
+      }
 
       return;
     }
