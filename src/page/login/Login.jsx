@@ -1,5 +1,5 @@
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-import bcrypt from "bcryptjs";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,9 +15,6 @@ export default function Login() {
   useEffect(() => {
     dispatch(userFindAll());
   }, []);
-// 
-
-  };
 
   const onFinish = (values) => {
     console.log("Success:", values);

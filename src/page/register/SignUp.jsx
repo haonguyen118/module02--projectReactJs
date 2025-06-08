@@ -4,12 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { userAdd, userFindAll } from "../../redux/api/service/userService";
+import bcrypt from "bcryptjs";
 
 export default function Register() {
-  //tao useState luu gia tri password
-  const [password, setPassword] = useState("");
-  const [hashedPassword, setHashedPassword] = useState("");
-
   //lay danh sach users tu server
   const { users } = useSelector((state) => state.users);
   console.log("users1", users);
@@ -26,23 +23,6 @@ export default function Register() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  // const handleChangePassword = () => {
-  //   const salt = bcrypt.genSaltSync(10); // Tạo salt
-  //   const hash = bcrypt.hashSync(password, salt); // Mã hóa password
-  //   setHashedPassword(hash); // Lưu hashed password
-  //   console.log("hash", hash);
-  //   bcrypt.compare(password, hash, (err, result) => {
-  //     if (err) {
-  //       console.error("Không trung khớp");
-  //       return;
-  //     }
-  //     if (result) {
-  //       console.log("Mật khẩu khớp!");
-  //     } else {
-  //       console.log("Mật khẩu không khớp!");
-  //     }
-  //   });
-  // };
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
@@ -54,8 +34,6 @@ export default function Register() {
   };
   const onFinish = async (values) => {
     console.log("Success:", values);
-    //tao ham ma hoa mat khau
-
     //tao ham check email
     const emailExists = users.some((user) => user.email === values.email);
     if (emailExists) {
@@ -66,7 +44,7 @@ export default function Register() {
         name: values.username,
         password: values.password,
         created_at: new Date(),
-        role: "Người dùng",
+        role: "User",
         status: 1,
       };
       await userAdd(newUser).then(() => dispatch(userFindAll()));
@@ -152,7 +130,6 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item
-              onChange={handleChangePassword}
               label="Mật khẩu"
               name="password"
               rules={[
