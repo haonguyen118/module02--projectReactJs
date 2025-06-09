@@ -48,23 +48,6 @@ export default function Login() {
       }
     });
 
-    // if (dataUser.status) {
-    //   notification.success({ message: "Đăng nhập thành công☺️", duration: 3 });
-    //   localStorage.setItem("isLogin", true);
-    //   navigate("/admin");
-    // } else {
-    //   if (!dataUser) {
-    //     notification.error({
-    //       message: "Email hoặc mật khẩu không trùng khớp!!!",
-    //       duration: 3,
-    //     });
-    //   } else {
-    //     notification.error({
-    //       message: "Tài khoản của bạn đã bị khoá!!!!",
-    //       duration: 3,
-    //     });
-    //   }
-
     return;
   };
 

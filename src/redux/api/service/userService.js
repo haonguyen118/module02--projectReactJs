@@ -17,6 +17,6 @@ export const deleteUser = async (oldStatus,userId) => {
     return resp;
 };
 export const userUpdate = async (updateUser, updateId) => {
-    const resp = await jsonAxios.put(`users/${updateId}`, updateUser);
+    const resp = await jsonAxios.patch(`users/${updateId}`, updateUser);
     return resp;
 };
