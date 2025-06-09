@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 .active{
-    background-color: blue;
+
+    display: inline-block;
+    padding: 2px;
+    background-color: #0079fe;
     color: white;
-    border-radius: "10%";
+    border-radius: 6px;
 }

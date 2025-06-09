@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userAdd, userFindAll } from "../redux/api/service/userService";
 import { useForm } from "antd/es/form/Form";
+import bcrypt from "bcryptjs";
 
 export default function AddUserModal({
   handleCancel,
@@ -22,7 +23,7 @@ export default function AddUserModal({
 }) {
   const { users } = useSelector((state) => state.users);
 
-  console.log("users1", users);
+  // console.log("users1", users);
 
   const dispatch = useDispatch();
   const [form] = useForm();
@@ -45,6 +46,10 @@ export default function AddUserModal({
     }
   };
   const onFinish = async (values) => {
+    // ham ma hoa mat khau
+    const salt = bcrypt.genSaltSync(10); // Tạo salt
+    const hash = bcrypt.hashSync(values.password, salt); // Mã hóa password
+
     console.log("Success:", values);
     const emailExists = users.some((user) => user.email === values.email);
     if (emailExists) {
@@ -53,10 +58,10 @@ export default function AddUserModal({
       const newUser = {
         email: values.email,
         name: values.username,
-        password: values.password,
+        password: hash,
         dateOfBirth: values.dateOfBirth,
         created_at: new Date(),
-        role: "User",
+        role: "Người dùng",
         status: 1,
       };
       await userAdd(newUser).then(() => dispatch(userFindAll()));
@@ -74,7 +79,6 @@ export default function AddUserModal({
         style={{ gap: 20 }}
         title="Thêm mới tài khoản"
         open={isModalOpen}
-        // onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
       >

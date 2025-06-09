@@ -7,6 +7,10 @@ import { userAdd, userFindAll } from "../../redux/api/service/userService";
 import bcrypt from "bcryptjs";
 
 export default function Register() {
+  // ham ma hoa mat khau
+  // const [password, setPassword] = useState("");
+  // const [hashedPassword, setHashedPassword] = useState("");
+
   //lay danh sach users tu server
   const { users } = useSelector((state) => state.users);
   console.log("users1", users);
@@ -34,6 +38,12 @@ export default function Register() {
   };
   const onFinish = async (values) => {
     console.log("Success:", values);
+    // ham ma hoa mat khau
+    const salt = bcrypt.genSaltSync(10); // Tạo salt
+    const hash = bcrypt.hashSync(values.password, salt); // Mã hóa password
+    // setHashedPassword(hash); // Lưu hashed password
+    // console.log(hash);
+
     //tao ham check email
     const emailExists = users.some((user) => user.email === values.email);
     if (emailExists) {
@@ -42,9 +52,9 @@ export default function Register() {
       const newUser = {
         email: values.email,
         name: values.username,
-        password: values.password,
+        password: hash,
         created_at: new Date(),
-        role: "User",
+        role: "Người dùng",
         status: 1,
       };
       await userAdd(newUser).then(() => dispatch(userFindAll()));

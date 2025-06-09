@@ -9,6 +9,7 @@ import {
   Radio,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import bcrypt from "bcryptjs";
 
 import {
   userAdd,
@@ -54,14 +55,11 @@ export default function EditUserModal({
   };
   const onFinish = async (values) => {
     console.log("Success:", values);
-    // const emailExists = users.some((user) => user.email === values.email);
-    // if (emailExists) {
-    //   notification.error({ message: "Email đã tồn tại", duration: 2 });
-    // } else {
+
     const updateUser = {
       email: values.email,
       name: values.username,
-      password: values.password,
+
       dateOfBirth: values.dateOfBirth,
       created_at: new Date(),
       role: values.role,
@@ -71,7 +69,7 @@ export default function EditUserModal({
       dispatch(userFindAll())
     );
     notification.success({ message: "Cập nhật thành công", duration: 2 });
-    // }
+
     setIsModalEditOpen(false);
     form.resetFields();
   };
@@ -82,7 +80,7 @@ export default function EditUserModal({
       form.setFieldsValue({
         username: dataEdit.name,
         email: dataEdit.email,
-        password: dataEdit.password,
+
         dateOfBirth: dataEdit.dateOfBirth,
         status: dataEdit.status,
         role: dataEdit.role,
@@ -137,7 +135,6 @@ export default function EditUserModal({
             <Input style={{ width: 480 }} />
           </Form.Item>
           <Form.Item
-            // disabled
             label="Email"
             name="email"
             rules={[
@@ -153,31 +150,11 @@ export default function EditUserModal({
             ]}
           >
             <Input
-              readOnly
+              disabled
               placeholder="you@gmail.com"
               style={{ width: 480 }}
               onChange={handleEmailChange}
             />
-          </Form.Item>
-
-          <Form.Item
-            label="Mật khẩu"
-            name="password"
-            rules={[
-              { required: true, message: "Mật khẩu không được để trống!!!!" },
-              {
-                min: 8,
-                message: "Mật khẩu phải có ít nhất 8 ký tự!",
-              },
-              {
-                pattern:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/,
-                message:
-                  "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt!",
-              },
-            ]}
-          >
-            <Input.Password style={{ width: 480 }} />
           </Form.Item>
 
           <Form.Item name="status" label="Trạng thái">
@@ -191,8 +168,8 @@ export default function EditUserModal({
           <Form.Item name="role" label="Role">
             <Radio.Group
               options={[
-                { value: "Admin", label: "Admin" },
-                { value: "User", label: "User" },
+                { value: "Quản trị viên", label: "Quản trị viên" },
+                { value: "Người dùng", label: "Người dùng" },
               ]}
             />
           </Form.Item>

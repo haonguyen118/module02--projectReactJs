@@ -47,9 +47,12 @@ export default function SizeBar() {
         <NavLink to={"/admin/product"}> Quản lý sản phẩm</NavLink>
       </div>
       <br />
-      <div>
+      <div style={{ display: "flex", gap: 5 }}>
         {" "}
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <i
+          style={{ marginTop: 5 }}
+          class="fa-solid fa-arrow-right-from-bracket"
+        ></i>
         <p onClick={logout}> Đăng xuất</p>
       </div>
     </div>

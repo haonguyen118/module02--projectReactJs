@@ -4,44 +4,68 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { userFindAll } from "../../redux/api/service/userService";
+import bcrypt from "bcryptjs";
 
 export default function Login() {
-  // const [form] = Form.useForm();
   const [validateStatus, setValidateStatus] = useState("");
   const navigate = useNavigate();
   const { users } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   console.log("users", users);
+
   useEffect(() => {
     dispatch(userFindAll());
   }, []);
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    const emailExists = users.find(
-      (user) => user.email === values.email && user.password === values.password
-    );
-    console.log("emailExisted", emailExists);
+    const dataUser = users.find((user) => user.email === values.email);
 
-    if (emailExists && emailExists.status) {
-      notification.success({ message: "Đăng nhập thành công☺️", duration: 3 });
-      localStorage.setItem("isLogin", true);
-      navigate("/admin");
-    } else {
-      if (!emailExists) {
+    bcrypt.compare(values.password, dataUser.password, (err, result) => {
+      if (err) {
+        console.error("Không trung khớp");
+        return;
+      }
+      if (result) {
+        if (dataUser.status) {
+          notification.success({
+            message: "Đăng nhập thành công☺️",
+            duration: 3,
+          });
+          localStorage.setItem("isLogin", true);
+          navigate("/admin");
+        } else {
+          notification.error({
+            message: "Tài khoản của bạn đã bị khoá!!!!",
+            duration: 3,
+          });
+        }
+      } else {
         notification.error({
           message: "Email hoặc mật khẩu không trùng khớp!!!",
           duration: 3,
         });
-      } else {
-        notification.error({
-          message: "Tài khoản của bạn đã bị khoá!!!!",
-          duration: 3,
-        });
       }
+    });
 
-      return;
-    }
+    // if (dataUser.status) {
+    //   notification.success({ message: "Đăng nhập thành công☺️", duration: 3 });
+    //   localStorage.setItem("isLogin", true);
+    //   navigate("/admin");
+    // } else {
+    //   if (!dataUser) {
+    //     notification.error({
+    //       message: "Email hoặc mật khẩu không trùng khớp!!!",
+    //       duration: 3,
+    //     });
+    //   } else {
+    //     notification.error({
+    //       message: "Tài khoản của bạn đã bị khoá!!!!",
+    //       duration: 3,
+    //     });
+    //   }
+
+    return;
   };
 
   const onFinishFailed = (errorInfo) => {

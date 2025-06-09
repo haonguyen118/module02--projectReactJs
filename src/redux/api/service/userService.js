@@ -4,7 +4,7 @@ import {jsonAxios} from "./index"
 
 export const userFindAll = createAsyncThunk('users/userFindAll', async () => {
     const resp = await jsonAxios.get('users');
-    console.log("resp",resp);
+    // console.log("resp",resp);
     
     return resp.data;
 });

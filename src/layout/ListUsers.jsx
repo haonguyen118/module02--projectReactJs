@@ -121,6 +121,7 @@ export default function ListUsers({ searchData }) {
         handleCancel={handleCancel}
         handleOk={handleOk}
         handleDelete={handleDelete}
+        oldStatus={oldStatus}
       />
 
       <EditUserModal
