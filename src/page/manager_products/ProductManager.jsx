@@ -17,13 +17,13 @@ export default function ProductManager() {
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 5 }}>
         <Select
-          defaultValue="All"
+          defaultValue="Tất cả"
           style={{ width: 200 }}
           onChange={handleChange}
           options={[
-            { value: "Selling", label: "Selling" },
-            { value: "Stop selling", label: "Stop seling" },
-            { value: "All", label: "All" },
+            { value: "true", label: "Đang bán" },
+            { value: "false", label: "Ngừng bán" },
+            { value: "null", label: "Tất cả" },
           ]}
         ></Select>
         <Input
@@ -37,13 +37,15 @@ export default function ProductManager() {
         style={{
           fontSize: 30,
           fontFamily: "inherit",
-
-          marginTop: 250,
-          marginLeft: 400,
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 300,
+          marginLeft: 150,
+          gap: 20,
         }}
       >
         <i
-          style={{ marginLeft: 100, color: "blue" }}
+          style={{ marginTop: 8, color: "blue" }}
           className="fa-solid fa-spinner"
         ></i>
         <p>Đang cập nhật</p>

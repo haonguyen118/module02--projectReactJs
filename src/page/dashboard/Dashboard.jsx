@@ -1,29 +1,24 @@
 export default function Dashboard() {
   return (
     <>
+      <p style={{ fontSize: 24, fontFamily: "inte", fontWeight: 700 }}>
+        Thống kê
+      </p>
+
       <div
         style={{
+          fontSize: 30,
+          fontFamily: "inherit",
           display: "flex",
           justifyContent: "center",
-          marginBottom: 10,
+          alignItems: "center",
+          marginLeft: 150,
+          marginTop: 300,
+          gap: 20,
         }}
       >
-        <p style={{ fontSize: 24, fontFamily: "inte", fontWeight: 700 }}>
-          Thống kê
-        </p>
-
-        <div
-          style={{
-            fontSize: 30,
-            fontFamily: "inherit",
-          }}
-        >
-          <i
-            style={{ marginTop: 300, marginRight: 500, color: "blue" }}
-            className="fa-solid fa-spinner"
-          ></i>
-          <p>Đang cập nhật</p>
-        </div>
+        <i style={{ color: "blue" }} className="fa-solid fa-spinner"></i>
+        <p>Đang cập nhật</p>
       </div>
     </>
   );
