@@ -22,10 +22,7 @@ export default function Login() {
     const dataUser = users.find((user) => user.email === values.email);
 
     bcrypt.compare(values.password, dataUser.password, (err, result) => {
-      if (err) {
-        console.error("Không trung khớp");
-        return;
-      }
+     
       if (result) {
         if (dataUser.status) {
           notification.success({
